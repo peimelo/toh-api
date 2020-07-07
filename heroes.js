@@ -25,8 +25,8 @@ function getData(token) {
 
 function get(token, id) {
   return new Promise((res) => {
-    const posts = getData(token);
-    res(posts[id]);
+    const heroes = getData(token);
+    res(heroes[id]);
   });
 }
 
