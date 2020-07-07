@@ -33,7 +33,8 @@ function get(token, id) {
 function getAll(token) {
   return new Promise((res) => {
     const heroes = getData(token);
-    res(heroes);
+    const heroesArray = Object.values(heroes);
+    res(heroesArray);
   });
 }
 
