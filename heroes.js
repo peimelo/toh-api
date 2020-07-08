@@ -51,7 +51,7 @@ function add(token, hero) {
     let heroes = getData(token);
 
     const ids = Object.keys(heroes).map((id) => +id);
-    const nextId = ids.length > 0 ? Math.max(...ids) + 1 : 1;
+    const nextId = ids && ids.length > 0 ? Math.max(...ids) + 1 : 1;
 
     heroes[nextId] = {
       id: nextId,
