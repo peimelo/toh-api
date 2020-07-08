@@ -22,15 +22,21 @@ app.get('/', (req, res) => {
       USAGE:
         Get all of the heroes
 
+    GET /heroes?name=term
+      USAGE:
+        Get all heroes with name like a term
+      PARAMS:
+        term - String
+
+    GET /heroes/:id
+      USAGE:
+        Get the details of a single hero
+
     POST /heroes
       USAGE:
         Add a new hero
       PARAMS:
         name - String
-
-    GET /heroes/:id
-      USAGE:
-        Get the details of a single hero
 
     PUT /heroes/:id
       USAGE:
@@ -62,7 +68,9 @@ app.use((req, res, next) => {
 });
 
 app.get('/heroes', (req, res) => {
-  heroes.getAll(req.token).then(
+  const { name } = req.query;
+
+  heroes.getAll(req.token, name).then(
     (data) => res.send(data),
     (error) => {
       console.error(error);

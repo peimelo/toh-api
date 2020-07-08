@@ -23,18 +23,26 @@ function getData(token) {
   return data;
 }
 
+function getAll(token, name) {
+  return new Promise((res) => {
+    const heroes = getData(token);
+    const heroesArray = Object.values(heroes);
+
+    const nameFilter = name && name.trim().toLowerCase();
+    const results = nameFilter
+      ? heroesArray.filter((hero) =>
+          hero.name.toLowerCase().includes(nameFilter)
+        )
+      : heroesArray;
+
+    res(results);
+  });
+}
+
 function get(token, id) {
   return new Promise((res) => {
     const heroes = getData(token);
     res(heroes[id]);
-  });
-}
-
-function getAll(token) {
-  return new Promise((res) => {
-    const heroes = getData(token);
-    const heroesArray = Object.values(heroes);
-    res(heroesArray);
   });
 }
 
@@ -43,14 +51,14 @@ function add(token, hero) {
     let heroes = getData(token);
 
     const ids = Object.keys(heroes).map((id) => +id);
-    const id = ids.length > 0 ? Math.max(...ids) + 1 : 1;
+    const nextId = ids.length > 0 ? Math.max(...ids) + 1 : 1;
 
-    heroes[id] = {
-      id,
+    heroes[nextId] = {
+      id: nextId,
       name: hero.name,
     };
 
-    res(heroes[id]);
+    res(heroes[nextId]);
   });
 }
 
@@ -73,8 +81,8 @@ function remove(token, id) {
 }
 
 module.exports = {
-  get,
   getAll,
+  get,
   add,
   edit,
   remove,
