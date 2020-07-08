@@ -26,7 +26,9 @@ function getData(token) {
 function getAll(token, name) {
   return new Promise((res) => {
     const heroes = getData(token);
+    console.log(heroes);
     const heroesArray = Object.values(heroes);
+    console.log(heroesArray);
 
     const nameFilter = name && name.trim().toLowerCase();
     const results = nameFilter
