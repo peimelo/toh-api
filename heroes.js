@@ -3,16 +3,16 @@ const clone = require('clone');
 let db = {};
 
 const defaultData = {
-  '11': { id: 11, name: 'Dr Nice' },
-  '12': { id: 12, name: 'Narco' },
-  '13': { id: 13, name: 'Bombasto' },
-  '14': { id: 14, name: 'Celeritas' },
-  '15': { id: 15, name: 'Magneta' },
-  '16': { id: 16, name: 'RubberMan' },
-  '17': { id: 17, name: 'Dynama' },
-  '18': { id: 18, name: 'Dr IQ' },
-  '19': { id: 19, name: 'Magma' },
-  '20': { id: 20, name: 'Tornado' },
+  '11': { id: 11, name: 'Homem Aranha' },
+  '12': { id: 12, name: 'Wolverine' },
+  '13': { id: 13, name: 'Mulher-Maravilha' },
+  '14': { id: 14, name: 'Viúva Negra' },
+  '15': { id: 15, name: 'Hulk' },
+  '16': { id: 16, name: 'Pantera Negra' },
+  '17': { id: 17, name: 'Homem de Ferro' },
+  '18': { id: 18, name: 'Capitão América' },
+  '19': { id: 19, name: 'Capitã Marvel' },
+  '20': { id: 20, name: 'Thor' },
 };
 
 function getData(token) {
