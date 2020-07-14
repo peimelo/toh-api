@@ -3,7 +3,7 @@ const clone = require('clone');
 let db = {};
 
 const defaultData = {
-  '11': { id: 11, name: 'Homem Aranha' },
+  '11': { id: 11, name: 'Homem-Aranha' },
   '12': { id: 12, name: 'Wolverine' },
   '13': { id: 13, name: 'Mulher-Maravilha' },
   '14': { id: 14, name: 'Viúva Negra' },
@@ -26,9 +26,7 @@ function getData(token) {
 function getAll(token, name) {
   return new Promise((res) => {
     const heroes = getData(token);
-    console.log(heroes);
     const heroesArray = Object.values(heroes);
-    console.log(heroesArray);
 
     const nameFilter = name && name.trim().toLowerCase();
     const results = nameFilter

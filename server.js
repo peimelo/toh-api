@@ -69,10 +69,6 @@ app.use((req, res, next) => {
 
 app.get('/heroes', (req, res) => {
   const { name } = req.query;
-  console.log(req);
-  console.log(req.token);
-  console.log(req.query);
-  console.log(name);
 
   heroes.getAll(req.token, name).then(
     (data) => res.send(data),
