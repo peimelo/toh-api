@@ -71,7 +71,10 @@ app.get('/heroes', (req, res) => {
   const { name } = req.query;
 
   heroes.getAll(req.token, name).then(
-    (data) => res.send(data),
+    (data) => {
+      res.set('token', '1974398');
+      return res.send(data);
+    },
     (error) => {
       console.error(error);
       res.status(500).send({
