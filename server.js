@@ -12,11 +12,20 @@ app.get('/', (req, res) => {
   <pre>
     Welcome to Tour of Heroes API!
 
-    Use an Authorization header to work with your own data:
+    POST /sessions: returns a 'token' in the body and also in the header. You can use this 'token' in the following endpoints.
+
+    All requests, except POST /sessions, should use an 'Authorization' header to work with your own data:
 
     fetch(url, { headers: { 'Authorization': 'whatever-you-want' }})
 
     The following endpoints are available:
+
+    POST /sessions
+      USAGE:
+        Authenticates the user.
+      PARAMS:
+        email - String
+        password - String
 
     GET /heroes
       USAGE:
@@ -53,6 +62,38 @@ app.get('/', (req, res) => {
   res.send(help);
 });
 
+app.post('/sessions', bodyParser.json(), (req, res) => {
+  const { email, password } = req.body;
+
+  if (!email) {
+    res.status(500).send({
+      error: "Missing 'email' parameter.",
+    });
+    return;
+  }
+
+  if (!password) {
+    res.status(500).send({
+      error: "Missing 'password' parameter.",
+    });
+    return;
+  }
+
+  let name = email.split('@')[0];
+  name = name.charAt(0).toUpperCase() + name.slice(1);
+
+  const token = Math.random().toString(36).substr(-10);
+
+  const user = {
+    email,
+    name,
+    token,
+  };
+
+  res.set('token', token);
+  res.send(user);
+});
+
 app.use((req, res, next) => {
   const token = req.get('Authorization');
 
@@ -72,7 +113,6 @@ app.get('/heroes', (req, res) => {
 
   heroes.getAll(req.token, name).then(
     (data) => {
-      res.set('token', '1974398');
       return res.send(data);
     },
     (error) => {
