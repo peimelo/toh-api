@@ -115,7 +115,7 @@ app.get('/heroes', (req, res) => {
     (data) => {
       setTimeout(() => {
         return res.send(data);
-      }, 200);
+      }, 400);
     },
     (error) => {
       console.error(error);
