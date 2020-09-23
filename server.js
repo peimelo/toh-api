@@ -113,7 +113,9 @@ app.get('/heroes', (req, res) => {
 
   heroes.getAll(req.token, name).then(
     (data) => {
-      return res.send(data);
+      setTimeout(() => {
+        return res.send(data);
+      }, 200);
     },
     (error) => {
       console.error(error);
