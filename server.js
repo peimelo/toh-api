@@ -1,7 +1,7 @@
 const express = require('express');
-const bodyParser = require('body-parser');
 const cors = require('cors');
-const heroes = require('./heroes');
+const sessionRouters = require('./routes/session.router');
+const heroesRouters = require('./routes/heroes.router');
 
 const app = express();
 
@@ -62,37 +62,7 @@ app.get('/', (req, res) => {
   res.send(help);
 });
 
-app.post('/sessions', bodyParser.json(), (req, res) => {
-  const { email, password } = req.body;
-
-  if (!email) {
-    res.status(500).send({
-      error: "Missing 'email' parameter.",
-    });
-    return;
-  }
-
-  if (!password) {
-    res.status(500).send({
-      error: "Missing 'password' parameter.",
-    });
-    return;
-  }
-
-  let name = email.split('@')[0];
-  name = name.charAt(0).toUpperCase() + name.slice(1);
-
-  const token = Math.random().toString(36).substr(-10);
-
-  const user = {
-    email,
-    name,
-    token,
-  };
-
-  res.set('token', token);
-  res.send(user);
-});
+app.use('/api', sessionRouters);
 
 app.use((req, res, next) => {
   const token = req.get('Authorization');
@@ -108,71 +78,7 @@ app.use((req, res, next) => {
   }
 });
 
-app.get('/heroes', (req, res) => {
-  const { name } = req.query;
-
-  heroes.getAll(req.token, name).then(
-    (data) => {
-      setTimeout(() => {
-        return res.send(data);
-      }, 400);
-    },
-    (error) => {
-      console.error(error);
-      res.status(500).send({
-        error: 'There was an error.',
-      });
-    }
-  );
-});
-
-app.post('/heroes', bodyParser.json(), (req, res) => {
-  heroes.add(req.token, req.body).then(
-    (data) => res.send(data),
-    (error) => {
-      console.error(error);
-      res.status(500).send({
-        error: 'There was an error.',
-      });
-    }
-  );
-});
-
-app.get('/heroes/:id', (req, res) => {
-  heroes.get(req.token, req.params.id).then(
-    (data) => res.send(data),
-    (error) => {
-      console.error(error);
-      res.status(500).send({
-        error: 'There was an error.',
-      });
-    }
-  );
-});
-
-app.delete('/heroes/:id', (req, res) => {
-  heroes.remove(req.token, req.params.id).then(
-    () => res.status(204).send(),
-    (error) => {
-      console.error(error);
-      res.status(500).send({
-        error: 'There was an error.',
-      });
-    }
-  );
-});
-
-app.put('/heroes/:id', bodyParser.json(), (req, res) => {
-  heroes.edit(req.token, req.params.id, req.body).then(
-    (data) => res.send(data),
-    (error) => {
-      console.error(error);
-      res.status(500).send({
-        error: 'There was an error.',
-      });
-    }
-  );
-});
+app.use('/api', heroesRouters);
 
 const port = process.env.PORT || 3000;
 app.listen(port, () => {
