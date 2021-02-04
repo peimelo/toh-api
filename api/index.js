@@ -80,9 +80,11 @@ app.use((req, res, next) => {
 
 app.use('/api', heroesRouters);
 
-const port = process.env.PORT || 3000;
-app.listen(port, () => {
-  console.log('Server listening on port %s', port);
-});
+if (process.env.HEROKU) {
+  const port = process.env.PORT || 3000;
+  app.listen(port, () => {
+    console.log('Server listening on port %s', port);
+  });
+}
 
 module.exports = app;
