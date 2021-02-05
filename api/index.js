@@ -2,6 +2,7 @@ const express = require('express');
 const cors = require('cors');
 const sessionRouters = require('../routes/session.router');
 const heroesRouters = require('../routes/heroes.router');
+const auth = require('./middlewares/authorization');
 
 const app = express();
 
@@ -63,22 +64,7 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', sessionRouters);
-
-app.use((req, res, next) => {
-  const token = req.get('Authorization');
-
-  if (token) {
-    req.token = token;
-    next();
-  } else {
-    res.status(403).send({
-      error:
-        'Please provide an Authorization header to identify yourself (can be whatever you want)',
-    });
-  }
-});
-
-app.use('/api', heroesRouters);
+app.use('/api', heroesRouters, auth);
 
 if (process.env.HEROKU) {
   const port = process.env.PORT || 3000;
