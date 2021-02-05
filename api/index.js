@@ -1,7 +1,7 @@
 const express = require('express');
 const cors = require('cors');
-const sessionRouters = require('../routes/session.router');
-const heroesRouters = require('../routes/heroes.router');
+const sessionRouters = require('./routes/session.router');
+const heroesRouters = require('./routes/heroes.router');
 const auth = require('./middlewares/authorization');
 
 const app = express();
