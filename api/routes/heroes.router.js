@@ -5,9 +5,9 @@ const heroes = require('./heroes');
 const heroesRouter = express.Router();
 
 heroesRouter.get('/heroes', (req, res) => {
-  const { term } = req.query;
+  const { name } = req.query;
 
-  heroes.getAll(req.token, term).then(
+  heroes.getAll(req.token, name).then(
     (data) => {
       setTimeout(() => {
         return res.send(data);

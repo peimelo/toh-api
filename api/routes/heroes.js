@@ -23,15 +23,15 @@ function getData(token) {
   return data;
 }
 
-function getAll(token, term) {
+function getAll(token, name) {
   return new Promise((res) => {
     const heroes = getData(token);
     const heroesArray = Object.values(heroes);
 
-    const termFilter = term && term.trim().toLowerCase();
-    const results = termFilter
+    const nameFilter = name && name.trim().toLowerCase();
+    const results = nameFilter
       ? heroesArray.filter((hero) =>
-          hero.name.toLowerCase().includes(termFilter)
+          hero.name.toLowerCase().includes(nameFilter)
         )
       : heroesArray;
 

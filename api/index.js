@@ -66,7 +66,7 @@ app.get('/', (req, res) => {
 app.use('/api', sessionRouters);
 app.use('/api', heroesRouters, auth);
 
-if (process.env.HEROKU) {
+if (process.env.HEROKU || process.env.NODE_ENV !== 'production') {
   const port = process.env.PORT || 3000;
   app.listen(port, () => {
     console.log('Server listening on port %s', port);
