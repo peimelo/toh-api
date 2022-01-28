@@ -1,13 +1,14 @@
 const authorization = (req, res, next) => {
   const token = req.get('Authorization');
 
-  if (token) {
+  if (token && token.length >= 10) {
     req.token = token;
-    next()
+    next();
   } else {
     res.status(403).send({
-      error: 'Please provide an Authorization header to identify yourself (can be whatever you want)'
-    })
+      error:
+        'Provide an Authorization header to identify yourself (anyone with at least 10 characters).',
+    });
   }
 };
 

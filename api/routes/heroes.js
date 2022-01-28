@@ -3,16 +3,16 @@ const clone = require('clone');
 let db = {};
 
 const defaultData = {
-  '11': { id: 11, name: 'Homem-Aranha' },
-  '12': { id: 12, name: 'Wolverine' },
-  '13': { id: 13, name: 'Mulher-Maravilha' },
-  '14': { id: 14, name: 'Viúva Negra' },
-  '15': { id: 15, name: 'Hulk' },
-  '16': { id: 16, name: 'Pantera Negra' },
-  '17': { id: 17, name: 'Homem de Ferro' },
-  '18': { id: 18, name: 'Capitão América' },
-  '19': { id: 19, name: 'Capitã Marvel' },
-  '20': { id: 20, name: 'Thor' },
+  11: { id: 11, name: 'Homem-Aranha' },
+  12: { id: 12, name: 'Wolverine' },
+  13: { id: 13, name: 'Mulher-Maravilha' },
+  14: { id: 14, name: 'Viúva Negra' },
+  15: { id: 15, name: 'Hulk' },
+  16: { id: 16, name: 'Pantera Negra' },
+  17: { id: 17, name: 'Homem de Ferro' },
+  18: { id: 18, name: 'Capitão América' },
+  19: { id: 19, name: 'Capitã Marvel' },
+  20: { id: 20, name: 'Thor' },
 };
 
 function getData(token) {
@@ -24,7 +24,7 @@ function getData(token) {
 }
 
 function getAll(token, name) {
-  return new Promise((res) => {
+  return new Promise((resolve) => {
     const heroes = getData(token);
     const heroesArray = Object.values(heroes);
 
@@ -35,49 +35,89 @@ function getAll(token, name) {
         )
       : heroesArray;
 
-    res(results);
+    resolve(results);
   });
 }
 
 function get(token, id) {
-  return new Promise((res) => {
+  return new Promise((resolve, reject) => {
     const heroes = getData(token);
-    res(heroes[id]);
+
+    if (heroes[id]) {
+      resolve(heroes[id]);
+    } else {
+      reject(raiseNotFoundError());
+    }
   });
 }
 
 function add(token, hero) {
-  return new Promise((res) => {
+  return new Promise((resolve, reject) => {
+    const error = raiseParamError(hero);
+    if (error) {
+      return reject(error);
+    }
+
+    const { name } = hero;
+
     let heroes = getData(token);
 
-    const ids = Object.keys(heroes).map((id) => +id);
-    const nextId = ids && ids.length > 0 ? Math.max(...ids) + 1 : 1;
-
-    heroes[nextId] = {
-      id: nextId,
-      name: hero.name,
+    const id = generateNextId(heroes);
+    heroes[id] = {
+      id,
+      name,
     };
 
-    res(heroes[nextId]);
+    resolve(heroes[id]);
   });
 }
 
 function edit(token, id, hero) {
-  return new Promise((res) => {
-    let heroes = getData(token);
-    for (prop in hero) {
-      heroes[id][prop] = hero[prop];
+  return new Promise((resolve, reject) => {
+    const error = raiseParamError(hero);
+    if (error) {
+      return reject(error);
     }
-    res(heroes[id]);
+
+    const { name } = hero;
+
+    let heroes = getData(token);
+
+    if (heroes[id]) {
+      heroes[id]['name'] = name;
+      resolve(heroes[id]);
+    } else {
+      reject(raiseNotFoundError());
+    }
   });
 }
 
 function remove(token, id) {
-  return new Promise((res) => {
+  return new Promise((resolve, reject) => {
     let heroes = getData(token);
-    delete heroes[id];
-    res();
+
+    if (heroes[id]) {
+      delete heroes[id];
+      resolve();
+    } else {
+      reject(raiseNotFoundError());
+    }
   });
+}
+
+function generateNextId(list) {
+  const ids = Object.keys(list).map((id) => +id);
+  return ids && ids.length > 0 ? Math.max(...ids) + 1 : 1;
+}
+
+function raiseParamError(hero) {
+  if (hero['name'] === undefined || hero['name'] === '') {
+    return new Error("Name can't be blank");
+  }
+}
+
+function raiseNotFoundError() {
+  return new Error('Record not found');
 }
 
 module.exports = {

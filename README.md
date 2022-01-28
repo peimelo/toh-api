@@ -13,7 +13,7 @@ Open `http://localhost:3000`
 
 `POST /api/sessions`: returns a `token` in the body and also in the header. You can use this `token` in the following endpoints.
 
-All requests, except `POST /api/sessions`, should use an **Authorization header** to work with your own data:
+All requests, except `POST /api/sessions`, use an **Authorization** header, of size >= 10 characters, so that you can only manipulate your data, for example:
 
 ```js
 fetch(url, {
@@ -29,7 +29,7 @@ The following endpoints are available:
 | --------------------------- | ------------------------------------- | ------------------------------------------------ |
 | `POST /api/sessions`        | Authenticates the user.               | **email** - [String] <br> **password** - String] |
 | `GET /api/heroes`           | Get all of the heroes.                |                                                  |
-| `GET /api/heroes?term=name` | Get all heroes with name like a term. | **name** - [String]                              |
+| `GET /api/heroes?name=term` | Get all heroes with name like a term. | **term** - [String]                              |
 | `GET /api/heroes/:id`       | Get the details of a single hero.     |                                                  |
 | `POST /api/heroes`          | Add a new hero.                       | **name** - [String]                              |
 | `PUT /api/heroes/:id`       | Edit the details of an existing hero. | **name** - [String]                              |

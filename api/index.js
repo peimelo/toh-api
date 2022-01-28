@@ -1,9 +1,10 @@
 const express = require('express');
 const cors = require('cors');
+const auth = require('./middlewares/authorization');
 const sessionRouters = require('./routes/session.router');
 const heroesRouters = require('./routes/heroes.router');
-const auth = require('./middlewares/authorization');
 
+const port = process.env.PORT || 3001;
 const app = express();
 
 app.use(cors());
@@ -64,13 +65,10 @@ app.get('/', (req, res) => {
 });
 
 app.use('/api', sessionRouters);
-app.use('/api', heroesRouters, auth);
+app.use('/api', auth, heroesRouters);
 
-if (process.env.HEROKU || process.env.NODE_ENV !== 'production') {
-  const port = process.env.PORT || 3000;
-  app.listen(port, () => {
-    console.log('Server listening on port %s', port);
-  });
-}
+app.listen(port, () => {
+  console.log('Server listening on port %s', port);
+});
 
 module.exports = app;

@@ -7,14 +7,14 @@ sessionRouter.post('/', bodyParser.json(), (req, res) => {
   const { email, password } = req.body;
 
   if (!email) {
-    res.status(500).send({
+    res.status(422).send({
       error: "Missing 'email' parameter.",
     });
     return;
   }
 
   if (!password) {
-    res.status(500).send({
+    res.status(422).send({
       error: "Missing 'password' parameter.",
     });
     return;
@@ -23,7 +23,7 @@ sessionRouter.post('/', bodyParser.json(), (req, res) => {
   let name = email.split('@')[0];
   name = name.charAt(0).toUpperCase() + name.slice(1);
 
-  const token = Math.random().toString(36).substr(-10);
+  const token = Math.random().toString(36).substring(2, 12);
 
   const user = {
     email,

@@ -4,11 +4,14 @@
   "license": "MIT",
   "dependencies": {
     "body-parser": "^1.17.1",
+    "clone": "^2.1.1",
     "cors": "^2.8.5",
-    "express": "^4.17.1",
-    "clone": "^2.1.1"
+    "express": "^4.17.1"
   },
   "scripts": {
-    "start": "node server.js"
+    "start": "nodemon api/index.js"
+  },
+  "devDependencies": {
+    "nodemon": "^2.0.15"
   }
 }
